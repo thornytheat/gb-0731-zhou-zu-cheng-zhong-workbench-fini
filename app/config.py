@@ -14,6 +14,9 @@ PAIR_MS = 35
 MIN_SPACING = Decimal("0.55")
 TANDEM_SPACING = Decimal("1.80")
 MAX_SPACING = Decimal("12.00")
+# 补传水位连续窗：同轮道相邻合法触发的最大耗时（按最大轴距 12 m 与车速推算）。
+# 间隔超过该窗却没有任何轮道事件，才判定为待补空档；窗内一律视作连续证据。
+BACKFILL_MAX_SPACING_M = MAX_SPACING
 NOTICE_RATIO = Decimal("0.10")
 SEVERE_RATIO = Decimal("0.20")
 TICKET_TOLERANCE = Decimal("50.00")

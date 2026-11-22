@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block scripts %}<script type="module" src="/static/backfill.js"></script>{% endblock %}
+{% block work %}
+<header class="topbar">
+  <div class="heading">
+    <h1>补传水位工作台</h1>
+    <span id="backfill-state" class="snapshot-state"><i class="lamp"></i>读取水位</span>
+  </div>
+  <form class="actions" id="backfill-form">
+    <label class="sample-field" for="backfill-file">补传包 CSV</label>
+    <input type="file" id="backfill-file" name="file" accept=".csv,text/csv" required>
+    <button class="btn btn--primary" id="backfill-send" type="submit">提交补传包</button>
+  </form>
+</header>
+<main class="content" id="main">
+  <p id="backfill-error" class="error" role="alert" hidden></p>
+  <p id="backfill-note" class="empty" role="status" hidden></p>
+
+  <section class="panel" aria-labelledby="waterline-title">
+    <div class="panel__head">
+      <h2 id="waterline-title">水位与安全起点</h2>
+      <span class="panel__meta" id="waterline-summary"></span>
+    </div>
+    <div class="panel__body" id="waterline-body">
+      <div class="waterline-kpis">
+        <div class="kpi"><span>观测通道</span><div><b id="wm-channels">—</b><small>条</small></div></div>
+        <div class="kpi"><span>已追平</span><div><b id="wm-confirmed">—</b><small>条</small></div></div>
+        <div class="kpi"><span>待补通道</span><div><b id="wm-waiting">—</b><small>条</small></div></div>
+        <div class="kpi"><span>空档段</span><div><b id="wm-gaps">—</b><small>段</small></div></div>
+        <div class="kpi kpi-review"><span>安全继续处理起点</span><div><b id="wm-resume">—</b></div></div>
+      </div>
+      <div class="table-scroll" id="timeline-table" tabindex="0" aria-label="通道时间线"></div>
+    </div>
+  </section>
+
+  <section class="panel evidence" aria-labelledby="package-title">
+    <div class="panel__head">
+      <h2 id="package-title">补传包台账</h2>
+      <span class="panel__meta">同内容包重跑不新增水位、不重复处理</span>
+    </div>
+    <div class="table-scroll" id="package-table" tabindex="0" aria-label="补传包"></div>
+  </section>
+
+  <section class="panel evidence" aria-labelledby="conclusion-title">
+    <div class="panel__head">
+      <h2 id="conclusion-title">车次结论版本</h2>
+      <span class="panel__meta">已发布结论只追加新版本，旧版永不静默改写</span>
+    </div>
+    <div class="table-scroll" id="conclusion-table" tabindex="0" aria-label="结论版本"></div>
+  </section>
+</main>
+{% endblock %}

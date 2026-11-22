@@ -21,6 +21,11 @@ def workbench(request: Request):
     })
 
 
+@router.get("/backfill", response_class=HTMLResponse)
+def backfill(request: Request):
+    return templates.TemplateResponse(request, "backfill.html", {"version": RULE_VERSION})
+
+
 @router.get("/api/health", tags=["服务"])
 def health():
     return {"status": "ready", "rules": RULE_VERSION}

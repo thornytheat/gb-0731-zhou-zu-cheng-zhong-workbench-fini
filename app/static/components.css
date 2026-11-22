@@ -99,6 +99,14 @@ h2 { font-size: 13px; letter-spacing: .035em; }
 .empty, .error { padding: 11px var(--pad); font-size: 12px; }
 .empty { color: var(--ink-3); }
 .statusbar a:hover { color: var(--ink); text-decoration: underline; }
+.panel__body { padding: 0 var(--pad) 8px; }
+.waterline-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid var(--line); border-radius: var(--radius-sm); margin: 8px 0; overflow: hidden; }
+.waterline-kpis .kpi { background: var(--panel-2); }
+.waterline-kpis .kpi + .kpi { border-left: 1px solid var(--line); }
+.waterline-kpis .kpi b { font: 650 14px/1.5 var(--mono); }
+#backfill-form input[type=file] { max-width: 260px; font-size: 11px; }
+#timeline-table, #package-table, #conclusion-table { max-height: 320px; }
 @media (max-width: 790px) {
   .rail-nav { margin-top: 8px; }
   .brand { min-height: 28px; }

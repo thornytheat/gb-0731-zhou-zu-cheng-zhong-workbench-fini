@@ -8,6 +8,7 @@ from app.api import router as api_router
 from app.config import ROOT, Settings
 from app.errors import DomainError
 from app.modules.m7_batches.handler import router as batch_router
+from app.modules.m8_backfill.api import router as backfill_router
 from app.store import Store
 from app.web import router as web_router
 
@@ -31,6 +32,7 @@ def create_app(settings=None):
     app.mount("/static", StaticFiles(directory=ROOT / "app/static"), name="static")
     app.include_router(api_router)
     app.include_router(batch_router)
+    app.include_router(backfill_router)
     app.include_router(web_router)
     return app
 

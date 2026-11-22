@@ -38,4 +38,7 @@ REASONS = {
     "SOURCE_CHANGED": "源文件或规则已变更",
     "REPLAY_MISMATCH": "重算结果与归档不一致",
     "STORE_BUSY": "批次库暂忙",
+    "BACKFILL_DUPLICATE": "补传包已接收，重跑不重复处理",
+    "CONCLUSION_CHANGED": "车次结论发生变化，旧版本已固化",
+    "WATERMARK_GAP": "通道存在待补空档，水位停在空档之前",
 }

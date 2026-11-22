@@ -14,6 +14,7 @@
 | M5 偏载判级 | 核查左重、右重和临界偏载 | `GET /api/balance` | `app/modules/m5_balance/thresholds.py` `app/modules/m5_balance/service.py` | `tests/test_balance.py` |
 | M6 整车磅单勾稽 | 审核磅单版次、差额和待复秤原因 | `GET /api/reconcile` | `app/modules/m6_reconcile/tickets.py` `app/modules/m6_reconcile/service.py` | `tests/test_reconcile.py` |
 | M7 称重批次 | 提交样例、重算、追溯并下载复核包 | `POST /api/batches` | `app/modules/m7_batches/service.py` `app/modules/m7_batches/export.py` `app/store.py` | `tests/test_batches.py` |
+| M8 补传水位 | 提交补传包、查看连续时段/待补空档/安全起点与结论版本 | `GET /api/backfill/overview` `POST /api/backfill/packages` | `app/modules/m8_backfill/segments.py` `app/modules/m8_backfill/service.py` `app/modules/m8_backfill/handler.py` | `tests/test_backfill.py` `tests/test_backfill_segments.py` |
 
 ## 陷阱登记
 
@@ -36,6 +37,11 @@
 | TRAP-19 | 0019 两个左轮争同一右轮 | 贪心配对凭空造轴 | 双向唯一才配对 | `app/modules/m4_axles/pair.py` | `tests/test_axles.py::test_nearest_pair_would_invent_axle_when_candidates_conflict` |
 | TRAP-23 | 0007 触发恰好在前证书右端 | 一轮发给两版证书 | 生效区间左闭右开 | `app/modules/m2_calibration/service.py` | `tests/test_calibration.py::test_exact_handoff_uses_new_certificate_and_no_double_match` |
 | TRAP-25 | `certificates.csv` 两张右轮证书叠期 | 随机取一张 | 隔离触发并带两张证书行 | `app/modules/m2_calibration/service.py` | `tests/test_calibration.py::test_overlap_isolates_with_both_certificates` |
+| TRAP-26 | 补传记录带旧时刻晚到 | 收到一条就抬高水位，空档被当成已完整 | 只承认无空档的观测包络前缀，水位停在首个空档前 | `app/modules/m8_backfill/segments.py` | `tests/test_backfill_segments.py::test_late_arrival_does_not_lift_watermark_across_gap` |
+| TRAP-27 | 同轮道跨轴组事件间隔本就很大 | 固定小连续窗把正常间隔全报成空档 | 连续窗按最大轴距与车次速度推算 | `app/modules/m8_backfill/segments.py` | `tests/test_backfill.py::test_backfill_advances_watermark_and_exposes_safe_resume_point` |
+| TRAP-28 | 补传后局部替换单条触发 | 去抖锚点与轴配对失真 | 按整车次合并流水后从去抖到勾稽整体重算 | `app/modules/m8_backfill/service.py` | `tests/test_backfill.py::test_submit_package_keeps_original_rows_and_recomputes_affected_passes` |
+| TRAP-29 | 重算覆盖已发布车次结论 | 对外结论被静默改写 | 结论按版本固化，只追加新版本并给字段差异 | `app/modules/m8_backfill/handler.py` `app/store.py` | `tests/test_backfill.py::test_published_conclusion_is_versioned_not_silently_rewritten` |
+| TRAP-30 | 同一补传包重复提交 | 重复处理、水位重复累加 | 内容 SHA-256 幂等键 + 事务串行，重跑不新增任何行 | `app/modules/m8_backfill/handler.py` | `tests/test_backfill.py::test_identical_package_rerun_is_idempotent` |
 
 ## 对账规则
 
